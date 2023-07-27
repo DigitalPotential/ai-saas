@@ -15,9 +15,6 @@ import { useState } from "react";
 import { ChatCompletionRequestMessage } from "openai";
 import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
-import { cn } from "@/lib/utils";
-import { UserAvatar } from "@/components/user-avatar";
-import { BotAvatar } from "@/components/bot-avatar";
 
 const MusicPage = () => {
     const router = useRouter();
@@ -34,17 +31,11 @@ const MusicPage = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            const userMessage: ChatCompletionRequestMessage = {
-                role: "user",
-                content: values.prompt,
-            };
-            const newMessages = [...messages, userMessage];
+            setMusic(undefined);
 
-            const response = await axios.post("/api/conversation", {
-                messages: newMessages,
-            });
+            const response = await axios.post("/api/music", values);
 
-            setMessages((current) => [...current, userMessage, response.data]);
+            setMusic(response.data.music)
 
             form.reset();
         } catch (error: any) {
@@ -112,7 +103,7 @@ const MusicPage = () => {
                             <Loader />
                         </div>
                     )}
-                    {messages.length === 0 && !isLoading && (
+                    {!music && !isLoading && (
                         <Empty label="No music generated" />
                     )}
                     <div>
