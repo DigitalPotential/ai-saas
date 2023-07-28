@@ -12,7 +12,6 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { ChatCompletionRequestMessage } from "openai";
 import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
 
@@ -35,7 +34,7 @@ const MusicPage = () => {
 
             const response = await axios.post("/api/music", values);
 
-            setMusic(response.data.music)
+            setMusic(response.data.audio)
 
             form.reset();
         } catch (error: any) {
